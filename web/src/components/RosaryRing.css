@@ -1,0 +1,115 @@
+.rosary-ring {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: min(1.25dvh, 0.75rem) min(1vw, 0.5rem);
+}
+
+/*
+ * Ring size: the SVG keeps aspect 128:118 (viewBox). For a given max height, the widest
+ * it can be is (max-height × 128/118). So on typical *landscape* viewports,
+ * width is almost always limited by --ring-max-h, NOT --ring-max-w — raising
+ * only --ring-max-w does nothing until it exceeds that height-derived width.
+ * To make the ring wider: increase --ring-max-h (uses more vertical space), or
+ * widen the bead path in rosaryRingGeometry (horizontal margin), not --ring-max-w alone.
+ */
+.rosary-ring__svg {
+  /* Primary “make it wider” knob on laptops: more dvh ⇒ larger height cap ⇒ wider. */
+  --ring-max-h: min(96dvh, 1400px);
+  /* Only applies when it is smaller than calc(--ring-max-h * 128/118) (e.g. portrait or very tall screens). */
+  --ring-max-w: min(calc(100vw - 0.5rem), 2000px);
+  --ring-width-if-height-limited: calc(var(--ring-max-h) * 128 / 118);
+  /* viewBox 128×118 (loop + intro tail on right) */
+  width: min(var(--ring-max-w), var(--ring-width-if-height-limited));
+  aspect-ratio: 128 / 118;
+  height: auto;
+  max-height: var(--ring-max-h);
+  overflow: visible;
+  filter: drop-shadow(0 2px 8px rgb(80 60 140 / 0.12));
+}
+
+.rosary-ring__chain {
+  stroke: rgb(180 160 220 / 0.45);
+  stroke-width: 0.35;
+  stroke-dasharray: 1.2 1.8;
+}
+
+.rosary-ring__chain--tail {
+  stroke-dasharray: 1.5 2;
+}
+
+.rosary-ring__bead--pending {
+  opacity: 0.38;
+}
+
+.rosary-ring__bead {
+  fill: rgb(255 255 255 / 0.55);
+  stroke: rgb(140 120 200 / 0.55);
+  stroke-width: 0.35;
+  transition:
+    fill 0.25s ease,
+    stroke 0.25s ease;
+}
+
+.rosary-ring__bead--lit {
+  stroke: rgb(107 79 184 / 0.85);
+}
+
+.rosary-ring__bead--current {
+  stroke: var(--ing-green);
+  stroke-width: 0.65;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rosary-ring__bead {
+    transition: none;
+  }
+}
+
+.rosary-ring__crucifix-path {
+  fill: rgb(200 190 220 / 0.65);
+  stroke: rgb(120 100 160 / 0.35);
+  stroke-width: 0.2;
+  paint-order: stroke fill;
+}
+
+.rosary-ring__pulse {
+  fill: none;
+  stroke: var(--ing-green);
+  stroke-width: 0.45;
+  opacity: 0.85;
+  animation: rosary-pulse 2.2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rosary-ring__pulse {
+    animation: none;
+    opacity: 0.55;
+  }
+}
+
+@keyframes rosary-pulse {
+  50% {
+    stroke: var(--ing-purple);
+    opacity: 0.45;
+  }
+}
+
+.rosary-ring__medal {
+  fill: rgb(255 255 255 / 0.88);
+  stroke: rgb(107 79 184 / 0.45);
+  stroke-width: 0.4;
+  filter: drop-shadow(0 1px 3px rgb(80 60 120 / 0.2));
+}
+
+.rosary-ring__medal-text {
+  font-family: var(--font-display);
+  font-size: 4.5px;
+  font-weight: 700;
+  fill: var(--ing-purple);
+  pointer-events: none;
+}

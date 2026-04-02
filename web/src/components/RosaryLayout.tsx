@@ -5,11 +5,12 @@ type Props = {
   title: string
   subtitle?: string
   children: ReactNode
+  className?: string
 }
 
-export function RosaryLayout({ title, subtitle, children }: Props) {
+export function RosaryLayout({ title, subtitle, children, className }: Props) {
   return (
-    <div className="rosary-layout">
+    <div className={['rosary-layout', className].filter(Boolean).join(' ')}>
       <div className="rosary-layout__cloud rosary-layout__cloud--tl" aria-hidden="true" />
       <div className="rosary-layout__cloud rosary-layout__cloud--br" aria-hidden="true" />
       <div className="rosary-layout__stars" aria-hidden="true">

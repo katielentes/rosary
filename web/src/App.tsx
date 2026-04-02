@@ -1,10 +1,12 @@
-import { useEffect } from 'react'
-import { MYSTERY_SETS } from './data/rosary'
+import { useEffect, useMemo } from 'react'
+import { MYSTERY_SETS, openingStepCount } from './data/rosary'
 import { useRosarySession } from './hooks/useRosarySession'
+import { computeIntroProgress, computeRingProgress } from './utils/rosaryProgress'
 import { BeadProgress } from './components/BeadProgress'
 import { MysteryPicker } from './components/MysteryPicker'
 import { PrayerCard } from './components/PrayerCard'
 import { RosaryLayout } from './components/RosaryLayout'
+import { RosaryRing } from './components/RosaryRing'
 import { DecorativeOrnament } from './components/DecorativeOrnament'
 
 function App() {
@@ -13,6 +15,7 @@ function App() {
     selectMystery,
     resetSession,
     restartSameMystery,
+    steps,
     step,
     stepIndex,
     totalSteps,
@@ -24,6 +27,21 @@ function App() {
     canGoNext,
     canGoPrev,
   } = useRosarySession()
+
+  const openingCount = useMemo(() => openingStepCount(steps), [steps])
+
+  const introProgress = useMemo(
+    () => computeIntroProgress(steps, stepIndex, isComplete),
+    [steps, stepIndex, isComplete],
+  )
+
+  const ringProgress = useMemo(
+    () => computeRingProgress(steps, stepIndex, hailMaryIndex, isComplete),
+    [steps, stepIndex, hailMaryIndex, isComplete],
+  )
+
+  const openingStepIndexForRing =
+    stepIndex < openingCount ? stepIndex : null
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -80,69 +98,94 @@ function App() {
 
   if (isComplete || !step) {
     return (
-      <RosaryLayout
-        title="Rosary"
-        subtitle={MYSTERY_SETS[mysterySet].title}
-      >
+      <>
+        <RosaryRing
+          introProgress={1}
+          ringProgress={1}
+          openingStepIndex={null}
+          centerLabel={MYSTERY_SETS[mysterySet].shortLabel}
+        />
+        <RosaryLayout
+          title="Rosary"
+          subtitle={MYSTERY_SETS[mysterySet].title}
+        >
         <div className="complete-card">
           <DecorativeOrnament />
           <h2>Finished</h2>
           <p>You made it through — quiet time counts.</p>
-          <div className="btn-row">
-            <button type="button" className="btn btn--accent-green" onClick={restartSameMystery}>
+          <div className="btn-row btn-row--compact">
+            <button type="button" className="btn btn--sm btn--accent-green" onClick={restartSameMystery}>
               Pray again
             </button>
-            <button type="button" className="btn btn--secondary" onClick={resetSession}>
+            <button type="button" className="btn btn--sm btn--secondary" onClick={resetSession}>
               Change mystery set
             </button>
           </div>
         </div>
-      </RosaryLayout>
+        </RosaryLayout>
+      </>
     )
   }
 
   const displayStepNumber = stepIndex + 1
 
   return (
-    <RosaryLayout
-      title="Rosary"
-      subtitle={MYSTERY_SETS[mysterySet].title}
-    >
-      <PrayerCard
-        step={step}
-        stepNumber={displayStepNumber}
-        totalSteps={totalSteps}
-        hailMaryIndex={isHailMaryRepeat ? hailMaryIndex : undefined}
+    <>
+      <RosaryRing
+        introProgress={introProgress}
+        ringProgress={ringProgress}
+        openingStepIndex={openingStepIndexForRing}
+        centerLabel={MYSTERY_SETS[mysterySet].shortLabel}
+      />
+      <RosaryLayout
+        className="rosary-layout--prayer-session"
+        title="Rosary"
+        subtitle={MYSTERY_SETS[mysterySet].title}
       >
-        {isHailMaryRepeat ? (
-          <BeadProgress current={hailMaryIndex} total={10} label="Hail Mary beads" />
-        ) : null}
-      </PrayerCard>
+        <div className="rosary-layout__session">
+          <div className="rosary-layout__center">
+            <PrayerCard
+              step={step}
+              stepNumber={displayStepNumber}
+              totalSteps={totalSteps}
+              hailMaryIndex={isHailMaryRepeat ? hailMaryIndex : undefined}
+            >
+              {isHailMaryRepeat ? (
+                <BeadProgress current={hailMaryIndex} total={10} label="Hail Mary beads" />
+              ) : null}
+            </PrayerCard>
+          </div>
+        </div>
+      </RosaryLayout>
 
-      <div className="btn-row">
-        <button type="button" className="btn btn--secondary" onClick={goPrev} disabled={!canGoPrev}>
-          Back
-        </button>
-        <button
-          type="button"
-          className="btn btn--accent-purple"
-          onClick={goNext}
-          disabled={!canGoNext}
-        >
-          {isHailMaryRepeat && hailMaryIndex < 9 ? 'Next bead' : 'Next'}
-        </button>
+      <div className="rosary-controls-dock" role="region" aria-label="Prayer navigation">
+        <div className="rosary-controls-dock__inner">
+          <div className="btn-row btn-row--compact">
+            <button type="button" className="btn btn--sm btn--secondary" onClick={goPrev} disabled={!canGoPrev}>
+              Back
+            </button>
+            <button
+              type="button"
+              className="btn btn--sm btn--accent-purple"
+              onClick={goNext}
+              disabled={!canGoNext}
+            >
+              {isHailMaryRepeat && hailMaryIndex < 9 ? 'Next bead' : 'Next'}
+            </button>
+          </div>
+
+          <p className="kbd-hint kbd-hint--compact">
+            <kbd>Space</kbd> or <kbd>→</kbd> next · <kbd>←</kbd> back
+          </p>
+
+          <div className="btn-row btn-row--compact">
+            <button type="button" className="btn btn--sm btn--ghost" onClick={resetSession}>
+              Start over
+            </button>
+          </div>
+        </div>
       </div>
-
-      <p className="kbd-hint">
-        <kbd>Space</kbd> or <kbd>→</kbd> next · <kbd>←</kbd> back
-      </p>
-
-      <div className="btn-row" style={{ marginTop: '0.5rem' }}>
-        <button type="button" className="btn btn--ghost" onClick={resetSession}>
-          Start over
-        </button>
-      </div>
-    </RosaryLayout>
+    </>
   )
 }
 

@@ -9,7 +9,7 @@
 }
 
 .prayer-card__chrome {
-  padding: 1.25rem 1.25rem 0.75rem;
+  padding: 0.45rem 1.2rem 0.45rem;
   text-align: center;
   background: linear-gradient(
     180deg,
@@ -31,14 +31,14 @@
   margin: 0.35rem 0 0;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(1.35rem, 4vw, 1.85rem);
+  font-size: clamp(1.15rem, 4vw, 1.5rem);
   line-height: 1.2;
   color: var(--text-heading);
 }
 
 .prayer-card__encouragement {
   margin: 0.5rem 0 0;
-  font-size: 0.95rem;
+  font-size: 0.75rem;
   font-style: italic;
   color: var(--text-muted);
   max-width: 36rem;
@@ -47,8 +47,8 @@
 }
 
 .prayer-card__body {
-  margin: 0.75rem 1rem 1rem;
-  padding: 1rem 1.1rem 1.15rem;
+  margin: 0.45rem 1rem 0.5rem;
+  padding: .75rem 1.1rem 1.15rem;
   background: var(--panel-reading);
   border-radius: calc(var(--radius-bubble) - 6px);
   border: 1px solid rgb(30 40 80 / 0.08);
@@ -58,8 +58,8 @@
 .prayer-card__text {
   margin: 0;
   font-family: var(--font-body);
-  font-size: clamp(1rem, 2.8vw, 1.12rem);
-  line-height: 1.65;
+  font-size: clamp(0.55rem, 2.35vw, 0.85rem);
+  line-height: 1.52;
   white-space: pre-wrap;
   color: var(--text-body);
   font-weight: 500;
@@ -70,4 +70,44 @@
   font-size: 0.9rem;
   color: var(--ing-green);
   font-weight: 600;
+}
+
+/* Prayer-only (center of ring): smaller type, lighter chrome */
+.prayer-card--minimal {
+  background: rgb(255 255 255 / 0.72);
+  box-shadow:
+    0 2px 12px rgb(80 60 120 / 0.08),
+    inset 0 1px 0 rgb(255 255 255 / 0.9);
+  border: 1px solid rgb(255 255 255 / 0.7);
+  max-width: min(36rem, 100%);
+}
+
+.prayer-card__body--minimal {
+  margin: 0;
+  padding: 0.75rem 0.9rem 0.85rem;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  border-radius: calc(var(--radius-bubble) - 4px);
+}
+
+.prayer-card__text--minimal {
+  font-size: clamp(0.82rem, 2.1vw, 0.95rem);
+  line-height: 1.5;
+  font-weight: 450;
+}
+
+.prayer-card__hint--minimal {
+  margin: 0.65rem 0 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.prayer-card--minimal .bead-progress {
+  margin: 0.45rem 0 0;
+}
+
+.prayer-card--minimal .bead-progress__caption {
+  font-size: 0.72rem;
+  margin-top: 0.4rem;
 }

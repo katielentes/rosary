@@ -9,6 +9,8 @@ type Props = {
   totalSteps: number
   hailMaryIndex?: number
   children?: ReactNode
+  /** Only prayer text in the ring; step/title hidden (still in aria-label). */
+  variant?: 'default' | 'minimal'
 }
 
 export function PrayerCard({
@@ -17,7 +19,26 @@ export function PrayerCard({
   totalSteps,
   hailMaryIndex,
   children,
+  variant = 'default',
 }: Props) {
+  const ariaLabel = `Step ${stepNumber} of ${totalSteps}: ${step.label}`
+
+  if (variant === 'minimal') {
+    return (
+      <article className="prayer-card prayer-card--minimal" aria-label={ariaLabel}>
+        <div className="prayer-card__body prayer-card__body--minimal">
+          <pre className="prayer-card__text prayer-card__text--minimal">{step.text}</pre>
+          {step.kind === 'hail_mary_repeat' && hailMaryIndex !== undefined ? (
+            <p className="prayer-card__hint prayer-card__hint--minimal" aria-live="polite">
+              Say this Hail Mary for bead {hailMaryIndex + 1} of 10.
+            </p>
+          ) : null}
+          {children}
+        </div>
+      </article>
+    )
+  }
+
   return (
     <article className="prayer-card">
       <header className="prayer-card__chrome">

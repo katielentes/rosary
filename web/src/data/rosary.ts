@@ -25,6 +25,12 @@ export interface RosaryStep {
   decadeIndex?: number
 }
 
+/** Index of first decade step (Sign of the Cross through opening Glory come before this). */
+export function openingStepCount(steps: RosaryStep[]): number {
+  const i = steps.findIndex((s) => s.kind === 'mystery_intro')
+  return i === -1 ? 0 : i
+}
+
 export interface MysterySetMeta {
   id: MysterySetId
   title: string

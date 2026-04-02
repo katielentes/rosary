@@ -32,6 +32,12 @@
     0 12px 28px rgb(80 60 140 / 0.18);
   --shadow-soft: 0 8px 24px rgb(60 40 100 / 0.12);
 
+  /* Stay inside side beads; slightly conservative vmin so wider ring + card stay aligned */
+  --content-max: min(43rem, min(85vmin, 91vw));
+
+  /* Fixed strip under the ring: Back/Next, kbd hint, Start over — keeps prayer scroll separate */
+  --rosary-controls-pad: clamp(7.75rem, 24dvh, 10rem);
+
   color-scheme: light;
 }
 
@@ -93,7 +99,12 @@ body::after {
   gap: 0.65rem;
   justify-content: center;
   align-items: center;
-  margin-top: 1.15rem;
+  margin-top: 1.1rem;
+}
+
+.btn-row--compact {
+  gap: 0.45rem;
+  margin-top: 0;
 }
 
 .btn {
@@ -151,6 +162,46 @@ body::after {
 .btn:disabled {
   opacity: 0.45;
   cursor: not-allowed;
+}
+
+.btn--sm {
+  padding: 0.42rem 0.9rem;
+  font-size: 0.82rem;
+  gap: 0.3rem;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.35),
+    0 2px 0 rgb(120 30 120 / 0.45),
+    0 6px 14px rgb(120 40 140 / 0.28);
+}
+
+.btn--sm::before {
+  inset: 2px 8px auto;
+  height: 38%;
+}
+
+.btn--sm.btn--secondary {
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.95),
+    0 2px 0 rgb(100 80 160 / 0.25),
+    0 5px 14px rgb(80 60 120 / 0.12);
+}
+
+.btn--sm.btn--ghost {
+  box-shadow: 0 1px 0 rgb(100 80 160 / 0.2);
+}
+
+.btn--sm.btn--accent-purple {
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.25),
+    0 2px 0 rgb(40 20 90 / 0.45),
+    0 6px 14px rgb(60 40 120 / 0.3);
+}
+
+.btn--sm.btn--accent-green {
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.35),
+    0 2px 0 rgb(20 90 60 / 0.45),
+    0 6px 14px rgb(30 120 80 / 0.28);
 }
 
 .btn--secondary {
@@ -253,6 +304,11 @@ body::after {
   margin: 0.75rem 0 0;
   font-size: 0.8rem;
   color: var(--text-muted);
+}
+
+.kbd-hint--compact {
+  margin: 0.35rem 0 0;
+  font-size: 0.72rem;
 }
 
 .kbd-hint kbd {
