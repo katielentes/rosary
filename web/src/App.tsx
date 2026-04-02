@@ -82,12 +82,12 @@ function App() {
           </h2>
           <div className="welcome-card__panel">
             <p>
-              Choose the set of mysteries you’re praying today — Joyful, Sorrowful,
+              Choose the set of mysteries you’re praying today: Joyful, Sorrowful,
               Glorious, or Luminous. Your spot saves in this browser if you need a
               pause.
             </p>
             <p style={{ fontStyle: 'italic', color: 'var(--text-muted)' }}>
-              Prayers get answered — stay a minute, stay honest.
+              Prayers get answered; stay a minute, stay honest.
             </p>
           </div>
           <MysteryPicker selected={null} onSelect={selectMystery} />
@@ -112,7 +112,7 @@ function App() {
         <div className="complete-card">
           <DecorativeOrnament />
           <h2>Finished</h2>
-          <p>You made it through — quiet time counts.</p>
+          <p>You made it through. Quiet time counts.</p>
           <div className="btn-row btn-row--compact">
             <button type="button" className="btn btn--sm btn--accent-green" onClick={restartSameMystery}>
               Pray again

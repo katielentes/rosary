@@ -165,7 +165,7 @@ export function buildSteps(setId: MysterySetId): RosaryStep[] {
     kind: 'opening',
     label: 'Sign of the Cross',
     text: `Hold your Rosary by the Crucifix and make the sign of the cross.\n\n${PRAYERS.signOfCross}`,
-    encouragement: 'Begin here — slow breath, unclench your shoulders.',
+    encouragement: 'Begin here. Slow breath, unclench your shoulders.',
   })
 
   push({
@@ -173,7 +173,7 @@ export function buildSteps(setId: MysterySetId): RosaryStep[] {
     kind: 'opening',
     label: 'Prayer Before the Rosary',
     text: PRAYERS.prayerBeforeRosary,
-    encouragement: 'Optional personal intention — name it quietly if you like.',
+    encouragement: 'Optional personal intention, name it quietly if you like.',
   })
 
   push({
@@ -181,7 +181,7 @@ export function buildSteps(setId: MysterySetId): RosaryStep[] {
     kind: 'opening',
     label: 'Apostles’ Creed',
     text: PRAYERS.creed,
-    encouragement: 'Say it like you mean it — belief is a gift you can ask for.',
+    encouragement: 'Say it like you mean it. Belief is a gift you can ask for.',
   })
 
   push({
@@ -212,7 +212,7 @@ export function buildSteps(setId: MysterySetId): RosaryStep[] {
     kind: 'opening',
     label: 'Glory Be To The Father',
     text: PRAYERS.gloryBe,
-    encouragement: 'The opening prayers are almost done — stay with it.',
+    encouragement: 'The opening prayers are almost done. Stay with it.',
   })
 
   for (let d = 0; d < 5; d++) {
@@ -223,7 +223,7 @@ export function buildSteps(setId: MysterySetId): RosaryStep[] {
       label: `Announce the mystery (${d + 1} of 5)`,
       text: `The ${m.announceOrdinal} ${setWord} Mystery\n${m.title}${m.fruit ? `\n\nFruit of the mystery: ${m.fruit}.` : ''}`,
       decadeIndex: d,
-      encouragement: 'Picture the scene — stay with one detail that stands out.',
+      encouragement: 'Picture the scene. Stay with one detail that stands out.',
     })
 
     push({
@@ -232,7 +232,7 @@ export function buildSteps(setId: MysterySetId): RosaryStep[] {
       label: 'Our Father',
       text: PRAYERS.ourFatherDecade,
       decadeIndex: d,
-      encouragement: 'This decade — one Our Father, ten Hail Marys, Glory Be, Fatima prayer.',
+      encouragement: 'This decade: one Our Father, ten Hail Marys, Glory Be, Fatima prayer.',
     })
 
     push({
@@ -258,7 +258,7 @@ export function buildSteps(setId: MysterySetId): RosaryStep[] {
       label: 'Fatima Prayer',
       text: PRAYERS.fatima,
       decadeIndex: d,
-      encouragement: d === 4 ? 'Last decade’s closing — then we’ll crown Mary.' : undefined,
+      encouragement: d === 4 ? 'Last decade’s closing. Then we’ll crown Mary.' : undefined,
     })
   }
 
@@ -267,7 +267,7 @@ export function buildSteps(setId: MysterySetId): RosaryStep[] {
     kind: 'closing',
     label: 'Hail Holy Queen Prayer',
     text: PRAYERS.hailHolyQueen,
-    encouragement: 'Prayers get answered — not always on your timeline, but they get heard.',
+    encouragement: 'Prayers get answered - not always on your timeline, but they get heard.',
   })
 
   push({
