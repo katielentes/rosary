@@ -1,0 +1,5 @@
+node_modules
+dist
+.venv
+extracted-pdf-sample.txt
+*.local
