@@ -31,7 +31,6 @@ export function RosaryRing({
   introProgress,
   ringProgress,
   openingStepIndex,
-  centerLabel,
 }: Props) {
   const ip = Math.min(1, Math.max(0, introProgress))
   const rp = Math.min(1, Math.max(0, ringProgress))
@@ -53,8 +52,7 @@ export function RosaryRing({
     })
   }, [rp, totalLen, openingStepIndex])
 
-  const medalText = centerLabel ? centerLabel.slice(0, 3).toUpperCase() : '✦'
-  const { vbW, vbH, cx, cy } = RING_VIEW
+  const { vbW, vbH } = RING_VIEW
 
   const introLit = (idx: number) => {
     if (openingStepIndex === null) return true

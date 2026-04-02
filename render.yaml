@@ -1,0 +1,11 @@
+# Render Blueprint: https://render.com/docs/infrastructure-as-code
+# After pushing to GitHub/GitLab, use Dashboard → New → Blueprint → select this repo.
+
+services:
+  - type: web
+    name: rosary
+    runtime: static
+    # Plan / billing: set in the Render dashboard (Blueprint no longer accepts `plan: free` for static sites)
+    rootDir: web
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
