@@ -93,7 +93,7 @@ export function RosaryRing({
           style={{ opacity: 0.4 + 0.6 * ip }}
         />
 
-        <circle cx={cx} cy={cy} r={9} className="rosary-ring__medal" />
+        {/* <circle cx={cx} cy={cy} r={9} className="rosary-ring__medal" />
         <text
           x={cx}
           y={cy}
@@ -102,7 +102,7 @@ export function RosaryRing({
           className="rosary-ring__medal-text"
         >
           {medalText}
-        </text>
+        </text> */}
 
         {ringBeads.map((s) => (
           <circle

@@ -69,7 +69,10 @@ function dist(x0: number, y0: number, x1: number, y1: number): number {
   return Math.hypot(x1 - x0, y1 - y0)
 }
 
-/** Loop starts at bottom center, counterclockwise; no crucifix on path */
+/**
+ * Loop path order: bottom center → … → right edge (down) → … (closed).
+ * Sampling adds RING_ARC_OFFSET so bead 0 is at right-edge center.
+ */
 function buildLoopSegments(): { segments: Seg[]; total: number } {
   const midX = (iL + iR) / 2
   const segments: Seg[] = []
@@ -165,6 +168,37 @@ function buildLoopSegments(): { segments: Seg[]; total: number } {
 
 const LOOP_CACHE = buildLoopSegments()
 
+/**
+ * Distance along the loop from the legacy origin (bottom center) to the point where
+ * the decade should begin: midpoint of the right vertical edge (by the intro tail).
+ */
+function computeRingArcOffsetFromBottomCenter(): number {
+  const rightMidY = (iT + iB) / 2
+  const { segments } = LOOP_CACHE
+  let acc = 0
+  for (const seg of segments) {
+    if (seg.kind === 'line') {
+      const onRightEdge =
+        Math.abs(seg.x0 - R) < 1e-6 &&
+        Math.abs(seg.x1 - R) < 1e-6 &&
+        Math.abs(seg.y1 - seg.y0) > 1e-6
+      if (onRightEdge) {
+        const yLo = Math.min(seg.y0, seg.y1)
+        const yHi = Math.max(seg.y0, seg.y1)
+        if (rightMidY >= yLo - 1e-6 && rightMidY <= yHi + 1e-6) {
+          const t = (rightMidY - seg.y0) / (seg.y1 - seg.y0)
+          return acc + t * seg.len
+        }
+      }
+    }
+    acc += seg.len
+  }
+  return 0
+}
+
+/** Added to arc length before walking segments so bead 0 sits at right center, not bottom center */
+const RING_ARC_OFFSET = computeRingArcOffsetFromBottomCenter()
+
 function pointOnSegment(seg: Seg, u: number): { x: number; y: number } {
   if (seg.kind === 'line') {
     const t = Math.min(1, Math.max(0, u))
@@ -181,10 +215,10 @@ function pointOnSegment(seg: Seg, u: number): { x: number; y: number } {
   }
 }
 
-/** Point along main loop; s=0 at bottom center */
+/** Point along main loop; s=0 at right-edge center (first ring bead after intro) */
 export function pointAtArcLength(s: number): { x: number; y: number } {
   const { segments, total } = LOOP_CACHE
-  let distLeft = ((s % total) + total) % total
+  let distLeft = ((s + RING_ARC_OFFSET) % total + total) % total
   for (const seg of segments) {
     if (distLeft <= seg.len + 1e-9) {
       const u = seg.len > 0 ? distLeft / seg.len : 0
